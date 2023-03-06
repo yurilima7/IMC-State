@@ -5,27 +5,26 @@ import 'package:flutter/material.dart';
 import 'package:imc_aula/widgets/imc_gauge.dart';
 import 'package:intl/intl.dart';
 
-class ImcSetstate extends StatefulWidget {
-  const ImcSetstate({super.key});
+class ImcValueNotifier extends StatefulWidget {
+  const ImcValueNotifier({super.key});
 
   @override
-  State<ImcSetstate> createState() => _ImcSetstateState();
+  State<ImcValueNotifier> createState() => _ImcValueNotifierState();
 }
 
-class _ImcSetstateState extends State<ImcSetstate> {
+class _ImcValueNotifierState extends State<ImcValueNotifier> {
   final pesoEC = TextEditingController();
   final alturaEC = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  var imc = 0.0;
+  var imc = ValueNotifier(0.0);
 
-  Future<void> _calcularIMC({required double peso, required double altura}) async {
-    setState(() {
-      imc = 0;
-    });
+  Future<void> _calcularIMC(
+      {required double peso, required double altura}) async {
+    imc.value = 0;
+
     await Future.delayed(const Duration(seconds: 1));
-    setState(() {
-      imc = peso / pow(altura, 2);
-    });
+  
+    imc.value = peso / pow(altura, 2);
   }
 
   @override
@@ -39,7 +38,7 @@ class _ImcSetstateState extends State<ImcSetstate> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('IMC SetState'),
+        title: const Text('IMC ValueNotifier'),
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -48,7 +47,10 @@ class _ImcSetstateState extends State<ImcSetstate> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                ImcGauge(imc: imc),
+                ValueListenableBuilder<double>(
+                  valueListenable: imc,
+                  builder: (_, imcValue, __) => ImcGauge(imc: imcValue),
+                ),
                 const SizedBox(
                   height: 20,
                 ),
