@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:imc_aula/blocPattern/imc_bloc.dart';
 import 'package:imc_aula/changeNotifier/imc_changenotifier.dart';
 import 'package:imc_aula/setState/imc_setstate.dart';
 import 'package:imc_aula/valueNotifier/imc_valuenotifier.dart';
@@ -35,7 +36,7 @@ class HomePage extends StatelessWidget {
               child: const Text('ChangeNotifier'),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () => _goToPage(context, const ImcBloc()),
               child: const Text('Bloc Pattern (Streams)'),
             ),
           ],
